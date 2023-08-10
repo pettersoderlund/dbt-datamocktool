@@ -40,7 +40,7 @@ jobs:
                     threads: 1
                     # These fields come from the service account json keyfile
                     keyfile_json:
-                      ${{ secrets.GCP_SA_KEYFILE_JSON }}
+                ${{ secrets.GCP_SA_KEYFILE_JSON }}
                 " > ./integration_tests/profiles.yml
       
       - name: Run integration tests
