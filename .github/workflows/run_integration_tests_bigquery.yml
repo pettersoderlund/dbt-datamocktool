@@ -4,7 +4,7 @@ name: Run integration tests with Bigquery
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main", "integration_test_bq" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -34,11 +34,14 @@ jobs:
                 outputs:
                   dev:
                     type: bigquery
-                    method: service-account
+                    method: service-account-json
                     project: ${{ secrets.GCP_PROJECT }}
                     dataset: jaffle_shop
-                    keyfile: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-                    threads: 1" > ./integration_tests/profiles.yml
+                    threads: 1
+                    # These fields come from the service account json keyfile
+                    keyfile_json:
+                      ${{ secrets.GCP_SA_KEYFILE_JSON }}
+                " > ./integration_tests/profiles.yml
       
       - name: Run integration tests
         run: | 
