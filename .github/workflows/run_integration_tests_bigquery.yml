@@ -29,19 +29,17 @@ jobs:
       # Set up dbt profiles for test
       - name: Create profiles.yml
         run: |
+          echo ${{ secrets.GCP_SERVICE_ACCOUNT }} > ~/sa.json
           echo "datamocktool:
                 target: dev
                 outputs:
                   dev:
                     type: bigquery
-                    method: service-account-json
+                    method: service-account
                     project: ${{ secrets.GCP_PROJECT }}
                     dataset: jaffle_shop
-                    threads: 1
-                    # These fields come from the service account json keyfile
-                    keyfile_json:
-                ${{ secrets.GCP_SA_KEYFILE_JSON }}
-                " > ./integration_tests/profiles.yml
+                    keyfile: ~/sa.json
+                    threads: 1" > ./integration_tests/profiles.yml
       
       - name: Run integration tests
         run: | 
