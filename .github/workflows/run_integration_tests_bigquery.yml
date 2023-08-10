@@ -29,7 +29,9 @@ jobs:
       # Set up dbt profiles for test
       - name: Create profiles.yml
         run: |
-          echo "${{ secrets.GCP_SA_KEYFILE_JSON }}" > ~/sa.json
+          echo "${{ secrets.GCP_SA_KEYFILE_JSON }}" > ./integration_tests/sa.json
+          cat ./integration_tests/sa.json
+          wc ./integration_tests/sa.json
           echo "datamocktool:
                 target: dev
                 outputs:
@@ -38,7 +40,7 @@ jobs:
                     method: service-account
                     project: ${{ secrets.GCP_PROJECT }}
                     dataset: jaffle_shop
-                    keyfile: ~/sa.json
+                    keyfile: ./integration_tests/sa.json
                     threads: 1" > ./integration_tests/profiles.yml
       
       - name: Run integration tests
